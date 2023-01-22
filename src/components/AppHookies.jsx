@@ -70,14 +70,16 @@ const  toggleModal = () => {
     setShowModal(!showModal)
   }
 
-useEffect((fetchData) => {
+useEffect(() => {
     
-    if(namePhoto === '') {
-        console.log('Not name')
-        return
+    if(namePhoto) {
+      fetchData()
+      
     }
-    fetchData()
     
+      
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [namePhoto]
 )
 
