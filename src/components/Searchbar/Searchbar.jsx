@@ -1,5 +1,3 @@
-import { Component } from "react";
-import { toast } from 'react-toastify'
 import {BsSearch} from "react-icons/bs";
 import PropTypes from 'prop-types';
 import '../styles.css'
@@ -64,5 +62,9 @@ const Searchbar= ({name, handleName, handleSubmit}) => {
     </header>)
     
 } 
-
+Searchbar.propTypes = {
+    handleSubmit: PropTypes.elementType.isRequired,
+    handleName: PropTypes.elementType.isRequired,
+    name: PropTypes.string.isRequired
+   }
 export default Searchbar;

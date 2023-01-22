@@ -1,4 +1,4 @@
-import React,{useState, useEffect, useRef} from "react";
+import React,{useState, useEffect} from "react";
 import { Hearts  } from 'react-loader-spinner'
 import Searchbar from './Searchbar/Searchbar';
 import axios from 'axios';
@@ -9,7 +9,7 @@ import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify'
 import './styles.css'
-import {BsSearch} from "react-icons/bs";
+
 const keyApi = '26520877-3fd7b67c65e333110b622b89f';
 const Container = () => {
   return(
@@ -31,7 +31,6 @@ export default function ImageFinder() {
  const [photo, setPhoto] = useState('')
 
 
-
 const handleName = event => {
     setName(event.target.value )
 
@@ -50,7 +49,7 @@ const handleSubmit= event => {
 }
 
 const openButton = (data) => {
-    if(data.totalHits == 0) {
+    if(data.totalHits === 0) {
       return toast.error(`No photo with ${namePhoto}`)
     }
     if(page*12 >= data.totalHits) {
@@ -71,9 +70,9 @@ const  toggleModal = () => {
     setShowModal(!showModal)
   }
 
-useEffect(() => {
+useEffect((fetchData) => {
     
-    if(namePhoto == '') {
+    if(namePhoto === '') {
         console.log('Not name')
         return
     }
