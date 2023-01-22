@@ -94,6 +94,10 @@ const fetchData = async () => {
 
       } catch(error) {
         setError(true)
+        if(isError) {
+          toast.error('Error')
+          console.log(error)
+        }
       } finally{
         setLoading(false)
         
