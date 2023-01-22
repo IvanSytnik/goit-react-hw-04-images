@@ -21,7 +21,7 @@ const Container = () => {
 
 export default function ImageFinder() {
  const [name, setName] = useState('')
- let [namePhoto, setSubmit] = useState(null)
+ let [namePhoto, setSubmit] = useState('')
  const [images, setImages] = useState([])
  const [isLoading, setLoading] = useState(false)
  const [isError, setError] = useState(false)
@@ -29,7 +29,7 @@ export default function ImageFinder() {
  const [showButton, setShowButton] = useState(false)
  const [showModal, setShowModal] = useState(false)
  const [photo, setPhoto] = useState('')
- const isFirstRender = useRef(true)
+
 
 
 const handleName = event => {
@@ -43,19 +43,22 @@ const handleSubmit= event => {
         console.log(name)
         return  toast.error("Please enter word")
     }
+       setPage(1)
        setSubmit(name)
        setImages([])
    
 }
 
 const openButton = (data) => {
+    if(data.totalHits == 0) {
+      return toast.error(`No photo with ${namePhoto}`)
+    }
     if(page*12 >= data.totalHits) {
         setShowButton(false)
       return toast.error(`No more photo`)
     }
-    else {
-      return  setShowButton(true)
-    }
+      setShowButton(true)
+    
    }
 const openPhoto  = (event) => {
       
@@ -70,9 +73,8 @@ const  toggleModal = () => {
 
 useEffect(() => {
     
-    if(isFirstRender.current) {
-        console.log('it is i am')
-        isFirstRender.current = false
+    if(namePhoto == '') {
+        console.log('Not name')
         return
     }
     fetchData()
@@ -81,22 +83,22 @@ useEffect(() => {
 )
 
 const fetchData = async () => {
-    if(namePhoto == null) {
-        return toast.error(`Enter name photo`)
-    }
     setLoading(true)
     try{
       
       const {data} = await axios.get(`https://pixabay.com/api/?q=${namePhoto}&page=${page}&key=${keyApi}&image_type=photo&orientation=horizontal&per_page=12`)
       console.log(data)
       setImages(prev => [...prev, ...data.hits])
+      
       openButton(data)
-     
+      setPage(prev => prev+1)
+
       } catch(error) {
         setError(true)
       } finally{
         setLoading(false)
-        setPage(prev => prev+1)
+        
+        
     }
   }
 
@@ -107,7 +109,7 @@ const fetchData = async () => {
     <Searchbar name={name} handleName={handleName} handleSubmit={handleSubmit}></Searchbar> 
     {images.length > 0 && (<ImageGallery items={images} onClick={openPhoto}/>)}
     {showModal && (<Modal onClose={toggleModal} photo={photo}/>)}
-    <ToastContainer autoClose={3000}/>
+    <ToastContainer autoClose={2000}/>
     {isLoading && (<Container></Container>)}
     {showButton && (<Button onClick={fetchData}/>)}
    
